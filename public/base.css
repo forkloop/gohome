@@ -1,0 +1,33 @@
+@import url(http://fonts.googleapis.com/css?family=Oleo+Script:400,700);
+
+body {
+  margin: 0;
+  font-family: "Oleo Script", cursive;
+}
+
+h1 {
+  margin: 10px;
+}
+
+.video-section {
+  position: relative;
+  height: 700px;
+  overflow: hidden;
+}
+
+video {
+  min-width: 100%;
+  min-height: 100%;
+  position: absolute;
+}
+
+#pacific-ocean {
+  background-image: url("pacific-ocean.png");
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+}
+
+article {
+  max-width: 1300px;
+  margin: auto;
+}
