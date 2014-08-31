@@ -1,9 +1,12 @@
+{{define "base"}}
+<!doctype html>
 <html>
 <head>
 <title> forkloop </title>
-<link href="base.css" type="text/css" rel="stylesheet"></link>
+<link href="/public/base.css" type="text/css" rel="stylesheet"></link>
 </head>
 <body>
-{{ yield }}
+{{template "body" .}}
 </body>
 </html>
+{{end}}

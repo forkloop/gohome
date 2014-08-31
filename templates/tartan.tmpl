@@ -1,0 +1,9 @@
+{{define "body"}}
+{{range .photos }}
+<div class="centering">
+<img src=/photos/{{.}} alt={{.}} />
+</div>
+{{else}}
+<p>nothing yet...</p>
+{{end}}
+{{end}}

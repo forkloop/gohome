@@ -31,3 +31,7 @@ article {
   max-width: 1300px;
   margin: auto;
 }
+
+.centering {
+  text-align: center;
+}
