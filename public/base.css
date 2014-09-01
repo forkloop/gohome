@@ -5,6 +5,12 @@ body {
   font-family: "Oleo Script", cursive;
 }
 
+input[type="submit"] {
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  display: block;
+}
+
 h1 {
   margin: 10px;
 }
