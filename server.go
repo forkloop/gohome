@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"flag"
 	"os/exec"
 	"path/filepath"
 	"path"
@@ -14,10 +16,15 @@ import (
 
 var (
 	uploadDir string
+	username string
+	password string
 )
 
 
 func main() {
+	port := flag.Int("p", 4000, "port")
+	flag.Parse()
+
 	r := gin.Default()
 
 	r.Static("/public", "public")
@@ -32,7 +39,7 @@ func main() {
 		c.HTML(200, "base", nil)
 	})
 
-	r.POST("/control", func(c *gin.Context) {
+	r.POST("/control", gin.BasicAuth(gin.Accounts{username: password}), func(c *gin.Context) {
 		err := c.Request.ParseForm()
 		if err != nil {
 			log.Printf("Error while parsing control request: %v", err)
@@ -66,7 +73,7 @@ func main() {
 		}
 	})
 
-	r.GET("/tartan/*time", gin.BasicAuth(gin.Accounts{"winston": "foo"}), func(c *gin.Context) {
+	r.GET("/tartan/*time", gin.BasicAuth(gin.Accounts{username: password}), func(c *gin.Context) {
 		r.SetHTMLTemplate(template.Must(template.ParseFiles("templates/base.tmpl", "templates/tartan.tmpl")))
 		log.Println(c.Params.ByName("time"))
 		t := c.Params.ByName("time")
@@ -81,7 +88,7 @@ func main() {
 		c.HTML(200, "base", gin.H{"photos": photos})
 	})
 
-	r.GET("/photos/:date/:name", func(c *gin.Context) {
+	r.GET("/photos/:date/:name", gin.BasicAuth(gin.Accounts{username: password}), func(c *gin.Context) {
 		p := path.Join(uploadDir, c.Params.ByName("date"), c.Params.ByName("name"))
 		log.Printf("request photo %v", p)
 		c.File(p)
@@ -115,7 +122,7 @@ func main() {
 		c.String(200, "")
 	})
 
-	r.Run(":4000")
+	r.Run(fmt.Sprintf(":%v", *port))
 }
 
 func init() {
@@ -123,6 +130,12 @@ func init() {
 	if uploadDir == "" {
 		uploadDir = os.TempDir()
 		log.Printf("Use default dir: %v", uploadDir)
+	}
+
+	username = os.Getenv("USER")
+	password = os.Getenv("HOME_PASSWORD")
+	if password == "" {
+		panic("Must provide a HOME_PASSWORD for authorization.")
 	}
 }
 
