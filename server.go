@@ -77,10 +77,11 @@ func main() {
 		r.SetHTMLTemplate(template.Must(template.ParseFiles("templates/base.tmpl", "templates/tartan.tmpl")))
 		log.Println(c.Params.ByName("time"))
 		t := c.Params.ByName("time")
-		if t == "" {
+		if t == "/" {
 			t = time.Now().Format("2006-01-02")
 		}
 
+		log.Printf("query %v", t)
 		photos := []string{}
 		for _, p := range listPhotos(path.Join(uploadDir, t)) {
 			photos = append(photos, path.Join(t, path.Base(p)))
@@ -141,7 +142,7 @@ func init() {
 
 func listPhotos(p string) []string {
 	log.Printf("listing file %v", p)
-	matches, err := filepath.Glob(path.Join(p, "*.png"))
+	matches, err := filepath.Glob(path.Join(p, "*.jpg"))
 	if err != nil {
 		log.Printf("%v", err)
 	}
